@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+{% load crispy_forms_tags %}
+
+{% block jsfiles %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+
+        <div class="col-4 mx-auto">
+
+            <h1>Login</h1>
+            <h5>We were happy to see you once again &#128522;</h5>
+            <form method="post">
+                {% csrf_token %}
+                {{ login_form|crispy }}
+                <button class="btn btn-primary mt-3 mb-3" type="submit">Login</button>
+            </form>
+            <p class="text-center">Don't have an account? Please, contact us!</p>
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+{% endblock %}
