@@ -10,14 +10,27 @@ from .models import TextRecords
 from .audio_handler import get_text_from_audio
 from .bert_model import anonymize_text
 
+from django_ratelimit.decorators import ratelimit
+
 import json
 
 
+@ratelimit(key='user', rate='15/d', method='POST', block=False)
 @login_required(login_url='/login')
 def main_page_view(request):
     if request.method == 'POST':
+
+        if not request.user.is_superuser:  # Don't limit if the user is a superuser
+            was_blocked = getattr(request, 'limited', False)
+            print(was_blocked)
+            if was_blocked and request.method == 'POST':
+                audio_form = FileUploadForm(request.POST, request.FILES)
+                text_form = TextUploadForm(request.POST)
+                return render(request, 'main.html', context={'audio_form': audio_form, 'text_form': text_form})
+
         audio_form = FileUploadForm(request.POST, request.FILES)
         text_form = TextUploadForm(request.POST)
+
         if audio_form.is_valid():
             audio_file = request.FILES['file']
             text = get_text_from_audio(audio_file)
