@@ -10,6 +10,9 @@ def combine_entities(results):
         word = result["word"]
         entity = result["entity"].replace("I-", "").replace("B-", "")
 
+        if word == '\'':
+            word = '&#x2018;'
+
         if word.startswith("##"):
             # Combine words with '##' with the previous word
             prev_result = processed_results[-1]

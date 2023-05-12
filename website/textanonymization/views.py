@@ -12,28 +12,31 @@ from .bert_model import anonymize_text
 
 from django_ratelimit.decorators import ratelimit
 
+from langdetect import detect
+
 import json
 
 
-@ratelimit(key='user', rate='15/d', method='POST', block=False)
+@ratelimit(key='user', rate='50/d', method='POST', block=False)
 @login_required(login_url='/login')
 def main_page_view(request):
     if request.method == 'POST':
 
         if not request.user.is_superuser:  # Don't limit if the user is a superuser
             was_blocked = getattr(request, 'limited', False)
-            print(was_blocked)
             if was_blocked and request.method == 'POST':
-                audio_form = FileUploadForm(request.POST, request.FILES)
-                text_form = TextUploadForm(request.POST)
-                return render(request, 'main.html', context={'audio_form': audio_form, 'text_form': text_form})
+                return render(request, 'request_limit_reached.html')
 
         audio_form = FileUploadForm(request.POST, request.FILES)
         text_form = TextUploadForm(request.POST)
 
+        # Audio form
         if audio_form.is_valid():
             audio_file = request.FILES['file']
             text = get_text_from_audio(audio_file)
+
+            print(detect(text))
+
             tokens = anonymize_text(text)
             context = {
                 'audio_form': audio_form,
@@ -42,9 +45,17 @@ def main_page_view(request):
                 'tokens': json.dumps(tokens)
             }
             return render(request, 'main.html', context=context)
+
+        # Text form
         if text_form.is_valid():
             text = text_form.cleaned_data['text']
+
+            print(detect(text))
+
             tokens = anonymize_text(text)
+            print(tokens)
+
+            print(tokens)
             context = {
                 'audio_form': audio_form,
                 'text_form': text_form,

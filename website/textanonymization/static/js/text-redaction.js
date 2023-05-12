@@ -32,7 +32,7 @@ function redactText(text, entities, tagsToRedact) {
                     tag = '<span style="background-color:rgb(230, 230, 255);padding: .0em;">' + entity.word + '</span>';
                     break;
                 case 'MISC':
-                    tag = '<span style="background-color:rgb(255, 255, 230);padding: .2em;">' + entity.word + '</span>';
+                    tag = '<span style="background-color:rgb(255, 255, 230);padding: .0em;">' + entity.word + '</span>';
                     break;
                 default:
                     tag = entity.word;
@@ -58,6 +58,7 @@ function updateRedactedText() {
 
     // Redact the text using the checked tags
     let redactedText = redactText(originalText, entities, tagsToRedact);
+    
 
     // Update the redacted text on the page
     document.getElementById("redactedText").innerHTML = redactedText;

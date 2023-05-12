@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% load crispy_forms_tags %}
+
+{% block jsfiles %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+
+        <div class="col-6 mx-auto">
+
+            <div class="text-center">
+                <p class="text-danger" style="font-size: 4em;">Oops!</p>
+                <h1 class="display-6">Request Limit Reached <span style="font-size: 1em;">&#128532;</span></h1>
+                <p class="lead">
+                    Apologies, but you have reached your request limit for today.
+                    Please return tomorrow to continue using our services.
+                    Thank you for your understanding
+                    
+                </p>
+                <a class="btn btn-outline-secondary" href="{% url 'main' %}">
+                    <i class="bi bi-box-arrow-in-left"></i> Back
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
