@@ -2,13 +2,6 @@
 
 Anonymizer is a web application that enables users to anonymize text and audio files containing human speech using a BERT-based Named Entity Recognition (NER) model. Built with the Django framework, this application provides a user-friendly interface to remove or replace sensitive information in both text and transcribed audio files.
 
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
-
 ## Features
 
 - Secure user registration and login system
