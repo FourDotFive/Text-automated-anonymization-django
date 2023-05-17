@@ -9,7 +9,7 @@ Anonymizer is a web application that enables users to anonymize text and audio f
 - Audio file submission, transcription, and anonymization
 - Real-time replacement of NER tokens with generic placeholders (e.g., `<PER>`, `<LOC>`)
 - View, copy, and save anonymized text to personal account records
-- Manage personal account records (view and delete)
+- Results Management: Provides the ability to view, copy, and save the anonymized text to personal account records. Users can also manage their records, including viewing and deleting specific entries.
 
 ## Model
 
@@ -17,7 +17,7 @@ The core of the Anonymizer application is a BERT-based Named Entity Recognition 
 
 ## Usage
 
-1. Register a new user account or log in to an existing one.
+1. Begin by registering a new user account or logging into an existing one.
 2. Submit text or an audio file containing human speech for anonymization.
 3. View the anonymized text with replaced NER tokens in real-time.
 4. Copy or save the anonymized text to your personal account records.

@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     var textForm = document.querySelector('#text-form-div');
     var textArea = document.querySelector('[name="text"]');
@@ -47,5 +46,3 @@ document.addEventListener('DOMContentLoaded', function() {
         textForm.style.display = 'block';
     });
 });
-
-
