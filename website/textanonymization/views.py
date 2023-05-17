@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import FileUploadForm, TextUploadForm, LoginForm, TextRequestForm
+from .forms import FileUploadForm, TextUploadForm, LoginForm, TextRequestForm, RegistrationForm
 from .models import TextRecords
 
 from .audio_handler import get_text_from_audio
@@ -15,6 +15,8 @@ from django_ratelimit.decorators import ratelimit
 from langdetect import detect
 
 import json
+
+from django.core.exceptions import ValidationError
 
 
 @ratelimit(key='user', rate='50/d', method='POST', block=False)
@@ -35,8 +37,6 @@ def main_page_view(request):
             audio_file = request.FILES['file']
             text = get_text_from_audio(audio_file)
 
-            print(detect(text))
-
             tokens = anonymize_text(text)
             context = {
                 'audio_form': audio_form,
@@ -53,9 +53,7 @@ def main_page_view(request):
             print(detect(text))
 
             tokens = anonymize_text(text)
-            print(tokens)
 
-            print(tokens)
             context = {
                 'audio_form': audio_form,
                 'text_form': text_form,
@@ -104,11 +102,10 @@ def login_view(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('main')
-            else:
-                return render(request, 'login.html', context={'login_form': form})
+            login(request, user)
+            return redirect('main')
+        else:
+            return render(request, 'login.html', context={'login_form': form})
     form = LoginForm()
     return render(request, 'login.html', context={'login_form': form})
 
@@ -124,3 +121,18 @@ def delete_view(request, record_id):
     TextRecords.objects.filter(user=request.user, id=record_id).delete()
     all_records = TextRecords.objects.filter(user=request.user)
     return render(request, 'account.html', context={'all_records': list(all_records)})
+
+
+def registration_view(request):
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+
+            return redirect('main')
+
+        return render(request, 'registration.html', context={'registration_form': form})
+
+    form = RegistrationForm()
+    return render(request, 'registration.html', context={'registration_form': form})

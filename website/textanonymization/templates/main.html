@@ -52,6 +52,9 @@
         {% else %}
         <ul class="navbar-nav ms-auto">
             <li class="nav-item me-3">
+                <a class="btn btn-secondary rounded" href="{% url 'registration' %}" role="button">Sign Up</a>
+            </li>
+            <li class="nav-item me-3">
                 <a class="btn btn-primary rounded" id="animated_btn" href="{% url 'login' %}" role="button">Login</a>
             </li>
         </ul>
