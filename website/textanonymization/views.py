@@ -12,11 +12,7 @@ from .bert_model import anonymize_text
 
 from django_ratelimit.decorators import ratelimit
 
-from langdetect import detect
-
 import json
-
-from django.core.exceptions import ValidationError
 
 
 @ratelimit(key='user', rate='50/d', method='POST', block=False)
@@ -49,8 +45,6 @@ def main_page_view(request):
         # Text form
         if text_form.is_valid():
             text = text_form.cleaned_data['text']
-
-            print(detect(text))
 
             tokens = anonymize_text(text)
 
